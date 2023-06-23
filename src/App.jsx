@@ -10,7 +10,7 @@ function App() {
       <NavBar />
 
       {/* Main Content */}
-      
+      This is the recipe homepage
       
       {/* Footer Component */}
       <Footer />
