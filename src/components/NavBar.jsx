@@ -6,7 +6,7 @@ const NavBar = () => {
 
       <div className="container mx-auto flex items-center justify-between">
 
-        <div className="text-white text-xl font-bold">Recipe Finder</div>
+        <div className="text-white text-xl font-bold">Epic Recipe Finder</div>
         
         <ul className="flex space-x-4">
           <li>
@@ -33,7 +33,7 @@ const NavBar = () => {
             </a>
           </li>
         </ul>
-        
+
       </div>
 
     </nav>
