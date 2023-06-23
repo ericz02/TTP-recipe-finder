@@ -1,4 +1,5 @@
-https://imgur.com/OhjRCsj
+![alt text](https://imgur.com/OhjRCsj)
+
 
 # React Assignment
 For this assignment, we want to give you all the opportunity to choose an application that you'd like to build over the next couple of weeks. You should be thinking of this as a project that you will add to your resume or portfolio. You will work on the project in multiple iterations, with deliverables for each day of work that build upon the concepts we have covered in morning lessons. Choose an application from the examples below and complete the deliverables for this iteration outlined below.
