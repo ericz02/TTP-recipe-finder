@@ -2,7 +2,7 @@ const NavBar = () => {
 
   
   return (
-    <nav className="bg-gray-800 py-4">
+    <nav className="bg-gray-800 py-10">
 
       <div className="container mx-auto flex items-center justify-between">
 
