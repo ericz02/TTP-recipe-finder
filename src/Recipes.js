@@ -14,6 +14,21 @@ const recipes = [
     imageSrc: "https://thecookingjar.com/wp-content/uploads/2018/05/2013-08-12-14.58.362-e1398056489112.jpg",
     description: "Elevate your seafood experience with grilled citrus salmon marinated in a zesty glaze. Topped with tropical mango salsa, this dish offers a burst of citrus and fruity flavors. Serve with asparagus or quinoa.",
   },
+  {
+    title: "Classic Margherita Pizza",
+    imageSrc:  "https://ohsweetbasil.com/wp-content/uploads/four-cheese-margherita-pizza-recipe-12-scaled.jpg",
+    description: "Indulge in the simplicity of a classic Margherita pizza with fresh basil leaves, mozzarella cheese, and tomato sauce on a thin and crispy crust.",
+  },
+  {
+    title: "Lemon Herb Roasted Chicken",
+    imageSrc: "https://www.cuisinart.com/globalassets/recipes/recipe_148_492918392.jpg",
+    description: "Enjoy tender and juicy roasted chicken infused with the flavors of lemon, garlic, and a medley of herbs. Perfectly seasoned and roasted to golden perfection.",
+  },
+  {
+    title: "Vegetable Stir-Fry with Tofu",
+    imageSrc: "https://www.funfoodfrolic.com/wp-content/uploads/2020/03/Tofu-Stir-Fry-Thumbnail.jpg",
+    description: "Savor the goodness of a colorful vegetable stir-fry with tofu, packed with crunchy vegetables and tossed in a savory sauce. Serve over steamed rice or noodles.",
+  },
 ];
 
 export default recipes
