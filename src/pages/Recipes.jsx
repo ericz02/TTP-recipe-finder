@@ -22,21 +22,23 @@ const Recipes = () => {
         <h1 className="text-4xl font-bold text-center mb-4 text-gray-800">Welcome to Recipe Finder</h1>
         <p className="text-xl text-center">Find and discover delicious recipes for every occasion.</p>
 
-        
+
         <div className="mt-8">
-          <div className="flex justify-center mb-4">
-            <input
-              type="text"
-              placeholder="Search recipes"
-              value={searchTerm}
-              onChange={handleInputChange}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-64"
-            />
+          <div className="flex justify-between items-center mb-4">
+            <>
+              <Modal />
+              <div className="mr-4">
+                <input
+                  type="text"
+                  placeholder="Search recipes"
+                  value={searchTerm}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-96"
+                />
+              </div>
+            </>
           </div>
 
-          <div>
-            <Modal />
-          </div>
 
           <h2 className="text-2xl font-bold mb-4 ml-5 text-gray-800">Featured Recipes</h2>
 

@@ -13,8 +13,8 @@ const NavBar = () => {
 
         <div className="flex space-x-4">
           <li className="text-gray-300 hover:text-white"><Link to = "/">Home</Link></li>
-          <li className="text-gray-300 hover:text-white"><Link to = "/about">About</Link></li>
           <li className="text-gray-300 hover:text-white"><Link to = "/recipes">Recipes</Link></li>
+          <li className="text-gray-300 hover:text-white"><Link to = "/about">About</Link></li>
           <li className="text-gray-300 hover:text-white"><Link to = "/contact">Contact</Link></li>
         </div>
 
