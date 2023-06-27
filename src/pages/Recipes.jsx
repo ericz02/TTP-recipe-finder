@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import recipes from "../Recipes";
+import Modal from "../components/Modal";
 
 const Recipes = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +22,7 @@ const Recipes = () => {
         <h1 className="text-4xl font-bold text-center mb-4 text-gray-800">Welcome to Recipe Finder</h1>
         <p className="text-xl text-center">Find and discover delicious recipes for every occasion.</p>
 
+        
         <div className="mt-8">
           <div className="flex justify-center mb-4">
             <input
@@ -29,7 +32,10 @@ const Recipes = () => {
               onChange={handleInputChange}
               className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-64"
             />
+          </div>
 
+          <div>
+            <Modal />
           </div>
 
           <h2 className="text-2xl font-bold mb-4 ml-5 text-gray-800">Featured Recipes</h2>
