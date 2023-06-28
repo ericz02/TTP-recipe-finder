@@ -5,13 +5,13 @@ const About = () => {
     {
       name: 'Gordon Ramsey',
       position: 'Head Chef',
-      bio: 'With over 15 years of experience in the culinary world, Ramsey brings a wealth of expertise to our team. He has a passion for experimenting with flavors and creating innovative dishes that delight the taste buds.',
+      bio: 'With over 15 years of experience in the culinary world, Gordon Ramsey is a renowned chef known for his fiery personality and exceptional cooking skills. He brings a wealth of expertise to our team and has a passion for experimenting with flavors to create innovative and mouthwatering dishes that delight the taste buds.',
       image: 'https://i2-prod.mirror.co.uk/incoming/article25219228.ece/ALTERNATES/s1200b/0_EHP_CHP_141021Gordon-Ramsay-_58659.jpg',
     },
     {
       name: 'Ratatouille',
       position: 'Soup Chef',
-      bio: 'Ratatouille\'s love for baking started at a young age. He has mastered the art of creating delectable desserts that are as visually appealing as they are delicious. His attention to detail and creativity add a unique touch to our dessert recipes.',
+      bio: "Ratatouille, a talented little rat with a passion for cooking, is our creative genius in the kitchen. Despite his small size, he has mastered the art of creating delectable desserts that are not only visually appealing but also incredibly delicious. Ratatouille's attention to detail and unwavering creativity add a unique touch to our dessert recipes that will leave you wanting more.",
       image: 'https://pbs.twimg.com/media/FHUy1lOWYAMOk6G.jpg',
     },
     // Add more team members as needed
@@ -27,13 +27,13 @@ const About = () => {
       <p className="text-gray-700">Happy cooking!</p>
 
       <section className="mt-8">
-        <h3 className="text-2xl font-bold mb-4">Meet Our Team</h3>
+        <h2 className="text-3xl font-bold mb-7">Meet Our Team</h2>
         <div className="grid grid-cols-2 gap-6">
           {teamMembers.map(member => (
-            <div key={member.name} className="flex flex-col items-center">
-              <img src={member.image} alt={member.name} className="rounded-full w-32 h-32 object-cover mb-2" />
+            <div key={member.name} className="flex flex-col items-center bg-white rounded-lg shadow-md p-4">
+              <img src={member.image} alt={member.name} className="rounded-full w-32 h-32 object-cover mb-4" />
               <h4 className="text-lg font-semibold mb-1">{member.name}</h4>
-              <p className="text-gray-700 text-center">{member.position}</p>
+              <p className="text-gray-700 text-center mb-2">{member.position}</p>
               <p className="text-gray-700 text-center">{member.bio}</p>
             </div>
           ))}
