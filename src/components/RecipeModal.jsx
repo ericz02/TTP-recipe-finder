@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const RecipeModal = ({ recipe, onClose }) => {
+
+  // when i click "esc" or X button, it closes
+  useEffect(() => {
+    const handleEscapeKeyPress = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+    };
+  }, []);
+
+  // when i click anywhere when the modal is open, it closes
   const handleModalClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -8,11 +25,8 @@ const RecipeModal = ({ recipe, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-10">
-      <div
-        className="bg-slate-400 rounded-lg p-6 relative w-full max-w-md max-h-full overflow-y-auto"
-        onClick={handleModalClick}
-      >
+    <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg" onClick={handleModalClick}>
+      <div className="bg-white rounded-lg p-6 relative w-full max-w-md max-h-full overflow-y-auto">
         <button
           type="button"
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none cursor-pointer"
@@ -25,12 +39,7 @@ const RecipeModal = ({ recipe, onClose }) => {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
@@ -49,7 +58,6 @@ const RecipeModal = ({ recipe, onClose }) => {
           ))}
         </ul>
       </div>
-      <div className="fixed inset-0" onClick={onClose}></div>
     </div>
   );
 };
