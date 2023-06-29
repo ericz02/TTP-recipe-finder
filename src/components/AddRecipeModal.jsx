@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Modal = () => {
+const AddRecipeModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
@@ -152,4 +152,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default AddRecipeModal;

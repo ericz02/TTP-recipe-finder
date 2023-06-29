@@ -1,6 +1,6 @@
 import { useState } from "react";
 import recipes from "../Recipes";
-import Modal from "../components/AddRecipeModal";
+import AddRecipeModal from "../components/AddRecipeModal";
 import RecipeModal from "../components/RecipeModal";
 
 const Recipes = () => {
@@ -35,7 +35,7 @@ const Recipes = () => {
       <div className="mt-8">
         <div className="flex justify-between items-center mb-4">
           <>
-            <Modal />
+            <AddRecipeModal />
             <div className="mr-4">
               <input
                 type="text"
