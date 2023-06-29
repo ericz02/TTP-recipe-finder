@@ -25,7 +25,7 @@ const RecipeModal = ({ recipe, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg" onClick={handleModalClick}>
+    <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm" onClick={handleModalClick}>
       <div className="bg-white rounded-lg p-6 relative w-full max-w-md max-h-full overflow-y-auto">
         <button
           type="button"

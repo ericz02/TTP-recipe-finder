@@ -1,6 +1,6 @@
 import { useState } from "react";
 import recipes from "../Recipes";
-import Modal from "../components/Modal";
+import Modal from "../components/AddRecipeModal";
 import RecipeModal from "../components/RecipeModal";
 
 const Recipes = () => {
