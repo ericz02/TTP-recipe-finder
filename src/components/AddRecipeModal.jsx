@@ -4,6 +4,7 @@ const AddRecipeModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
+  const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipes, setRecipes] = useState([]);
 
   const handleModalOpen = () => {
@@ -14,14 +15,18 @@ const AddRecipeModal = () => {
     setIsModalOpen(false);
     setRecipeTitle("");
     setRecipeDescription("");
+    setRecipeIngredients("");
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const newRecipe = {
       title: recipeTitle,
-      imageSrc: "https://example.com/placeholder-image.jpg", 
+      imageSrc: "https://example.com/placeholder-image.jpg",
       description: recipeDescription,
+      ingredients: recipeIngredients.split("\n").map((ingredient) =>
+        ingredient.trim()
+      ),
     };
     const updatedRecipes = [...recipes, newRecipe];
     setRecipes(updatedRecipes);
@@ -68,6 +73,11 @@ const AddRecipeModal = () => {
           <h3>{recipe.title}</h3>
           <img src={recipe.imageSrc} alt={recipe.title} />
           <p>{recipe.description}</p>
+          <ul>
+            {recipe.ingredients.map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+          </ul>
         </div>
       ))}
 
@@ -98,10 +108,7 @@ const AddRecipeModal = () => {
             </div>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
-                <label
-                  htmlFor="recipeTitle"
-                  className="block font-medium mb-2"
-                >
+                <label htmlFor="recipeTitle" className="block font-medium mb-2">
                   Title
                 </label>
                 <input
@@ -113,19 +120,26 @@ const AddRecipeModal = () => {
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="recipeDescription"
-                  className="block font-medium mb-2"
-                >
+                <label htmlFor="recipeDescription" className="block font-medium mb-2">
                   Description
                 </label>
                 <textarea
                   id="recipeDescription"
                   className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-md w-full"
                   value={recipeDescription}
-                  onChange={(event) =>
-                    setRecipeDescription(event.target.value)
-                  }
+                  onChange={(event) => setRecipeDescription(event.target.value)}
+                ></textarea>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="recipeIngredients" className="block font-medium mb-2">
+                  Ingredients
+                </label>
+                <textarea
+                  id="recipeIngredients"
+                  className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-md w-full"
+                  value={recipeIngredients}
+                  onChange={(event) => setRecipeIngredients(event.target.value)}
+                  placeholder="Enter ingredients here, separated by new lines"
                 ></textarea>
               </div>
               <div className="flex justify-between">

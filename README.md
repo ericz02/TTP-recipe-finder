@@ -8,7 +8,7 @@ Recipe Finder (Medium): This application allows users to search for recipes base
 Book Review Forum (Medium): This application allows users to search for books, read and post reviews, and save favorite books.
 
 
-Deliverables for Iteration 1:
+Deliverables for Iteration 4:
 
 ## Budget Tracker
 Set up a basic React project with a file structure.
