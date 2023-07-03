@@ -66,16 +66,17 @@ const AddRecipeModal = ({ onClose }) => {
         onClose();
       }
     };
-
+  
     const handleClickOutsideModal = (e) => {
-      if (!e.target.closest(".modal-content")) {
+      const modalContent = document.querySelector(".modal-content");
+      if (modalContent && !modalContent.contains(e.target)) {
         onClose();
       }
     };
-
+  
     document.addEventListener("keydown", handleEscapeKeyPress);
     document.addEventListener("mousedown", handleClickOutsideModal);
-
+  
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
       document.removeEventListener("mousedown", handleClickOutsideModal);
