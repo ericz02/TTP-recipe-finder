@@ -6,6 +6,7 @@ import recipes from "../Recipes";
 const Recipes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [isAddRecipeModalOpen, setIsAddRecipeModalOpen] = useState(false); // Add new state
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -23,6 +24,14 @@ const Recipes = () => {
     setSelectedRecipe(null);
   };
 
+  const handleAddRecipeModalOpen = () => {
+    setIsAddRecipeModalOpen(true);
+  };
+
+  const handleAddRecipeModalClose = () => {
+    setIsAddRecipeModalOpen(false);
+  };
+
   return (
     <div className="mx-auto my-8 min-h-screen">
       <h1 className="text-4xl font-bold text-center mb-4 text-gray-800">Welcome to Recipe Finder</h1>
@@ -30,7 +39,14 @@ const Recipes = () => {
 
       <div className="mt-8">
         <div className="flex justify-between items-center mb-4">
-          <AddRecipeModal onClose={handleCloseModal} />
+
+          <button
+            onClick={handleAddRecipeModalOpen}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-[20px] rounded"
+          >
+            Add Recipe
+          </button>
+
           <div className="mr-4">
             <input
               type="text"
@@ -63,9 +79,8 @@ const Recipes = () => {
         </div>
       </div>
 
-      {selectedRecipe && (
-        <RecipeModal recipe={selectedRecipe} onClose={handleCloseModal} />
-      )}
+      {isAddRecipeModalOpen && <AddRecipeModal onClose={handleAddRecipeModalClose} />} {/* Render AddRecipeModal when isAddRecipeModalOpen is true */}
+      {selectedRecipe && <RecipeModal recipe={selectedRecipe} onClose={handleCloseModal} />}
     </div>
   );
 };
