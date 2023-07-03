@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddRecipeModal = ({ onClose }) => {
@@ -51,17 +51,36 @@ const AddRecipeModal = ({ onClose }) => {
     e.preventDefault();
 
     try {
-      // Make a POST request to add the new recipe to the API
       const response = await axios.post("http://localhost:3000/recipes", newRecipe);
-      console.log(response.data); // The newly created recipe object returned by the API
+      console.log(response.data);
 
-      // Close the modal and perform any other necessary actions
       onClose();
     } catch (error) {
       console.error("Error adding recipe:", error);
     }
   };
 
+  useEffect(() => {
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    const handleClickOutsideModal = (e) => {
+      if (!e.target.closest(".modal-content")) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKeyPress);
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm">
@@ -95,7 +114,7 @@ const AddRecipeModal = ({ onClose }) => {
               name="title"
               value={newRecipe.title}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               required
             />
           </div>
@@ -110,7 +129,7 @@ const AddRecipeModal = ({ onClose }) => {
               name="imageSrc"
               value={newRecipe.imageSrc}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               required
             />
           </div>
@@ -124,8 +143,7 @@ const AddRecipeModal = ({ onClose }) => {
               name="description"
               value={newRecipe.description}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-              rows="4"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full h-24"
               required
             />
           </div>
@@ -138,33 +156,40 @@ const AddRecipeModal = ({ onClose }) => {
                   type="text"
                   value={ingredient}
                   onChange={(e) => handleIngredientChange(e, index)}
-                  className="w-full border border-gray-300 rounded-l px-3 py-2"
-                  placeholder="Ingredient"
+                  className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mr-2"
                   required
                 />
                 <button
                   type="button"
-                  className="bg-red-500 text-white rounded-r px-3 py-2 ml-1"
                   onClick={() => handleRemoveIngredient(index)}
+                  className="text-red-500 hover:text-red-700 focus:outline-none"
                 >
-                  Remove
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
             ))}
             <button
               type="button"
-              className="bg-green-500 text-white rounded px-3 py-2"
               onClick={handleAddIngredient}
+              className="text-blue-500 hover:text-blue-700 focus:outline-none"
             >
-              Add Ingredient
+              + Add Ingredient
             </button>
           </div>
 
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Save Recipe
+            Add Recipe
           </button>
         </form>
       </div>

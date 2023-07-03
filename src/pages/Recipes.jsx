@@ -1,28 +1,24 @@
-import { useState } from "react";
-import recipes from "../Recipes";
+import React, { useState } from "react";
 import AddRecipeModal from "../components/AddRecipeModal";
 import RecipeModal from "../components/RecipeModal";
+import recipes from "../Recipes";
 
 const Recipes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  // Filter the recipes based on the search term
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle input change in the search bar
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // Handle recipe click and open the modal
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
   };
 
-  // Handle modal close
   const handleCloseModal = () => {
     setSelectedRecipe(null);
   };
@@ -34,18 +30,16 @@ const Recipes = () => {
 
       <div className="mt-8">
         <div className="flex justify-between items-center mb-4">
-          <>
-            <AddRecipeModal />
-            <div className="mr-4">
-              <input
-                type="text"
-                placeholder="Search recipes"
-                value={searchTerm}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-96"
-              />
-            </div>
-          </>
+          <AddRecipeModal onClose={handleCloseModal} />
+          <div className="mr-4">
+            <input
+              type="text"
+              placeholder="Search recipes"
+              value={searchTerm}
+              onChange={handleInputChange}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-96"
+            />
+          </div>
         </div>
 
         <h2 className="text-2xl font-bold mb-4 ml-5 text-gray-800">Featured Recipes</h2>
@@ -72,7 +66,6 @@ const Recipes = () => {
       {selectedRecipe && (
         <RecipeModal recipe={selectedRecipe} onClose={handleCloseModal} />
       )}
-
     </div>
   );
 };
