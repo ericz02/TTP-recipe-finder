@@ -1,167 +1,199 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const AddRecipeModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [recipeTitle, setRecipeTitle] = useState("");
-  const [recipeDescription, setRecipeDescription] = useState("");
-  const [recipeIngredients, setRecipeIngredients] = useState("");
-  const [recipes, setRecipes] = useState([]);
+const AddRecipeModal = ({ onClose }) => {
+  const [newRecipe, setNewRecipe] = useState({
+    title: "",
+    imageSrc: "",
+    description: "",
+    ingredients: [],
+  });
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewRecipe((prevRecipe) => ({
+      ...prevRecipe,
+      [name]: value,
+    }));
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setRecipeTitle("");
-    setRecipeDescription("");
-    setRecipeIngredients("");
+  const handleIngredientChange = (e, index) => {
+    const { value } = e.target;
+    setNewRecipe((prevRecipe) => {
+      const updatedIngredients = [...prevRecipe.ingredients];
+      updatedIngredients[index] = value;
+      return {
+        ...prevRecipe,
+        ingredients: updatedIngredients,
+      };
+    });
   };
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const newRecipe = {
-      title: recipeTitle,
-      imageSrc: "https://example.com/placeholder-image.jpg",
-      description: recipeDescription,
-      ingredients: recipeIngredients.split("\n").map((ingredient) =>
-        ingredient.trim()
-      ),
-    };
-    const updatedRecipes = [...recipes, newRecipe];
-    setRecipes(updatedRecipes);
-    console.log("Updated recipes:", updatedRecipes);
-    handleModalClose();
+  const handleAddIngredient = () => {
+    setNewRecipe((prevRecipe) => ({
+      ...prevRecipe,
+      ingredients: [...prevRecipe.ingredients, ""],
+    }));
+  };
+
+  const handleRemoveIngredient = (index) => {
+    setNewRecipe((prevRecipe) => {
+      const updatedIngredients = [...prevRecipe.ingredients];
+      updatedIngredients.splice(index, 1);
+      return {
+        ...prevRecipe,
+        ingredients: updatedIngredients,
+      };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:3000/recipes", newRecipe);
+      console.log(response.data);
+
+      onClose();
+    } catch (error) {
+      console.error("Error adding recipe:", error);
+    }
   };
 
   useEffect(() => {
-    const handleEscapeKeyPress = (event) => {
-      if (event.key === "Escape") {
-        handleModalClose();
+    const handleEscapeKeyPress = (e) => {
+      if (e.key === "Escape") {
+        onClose();
       }
     };
-
-    const handleOutsideClick = (event) => {
+  
+    const handleClickOutsideModal = (e) => {
       const modalContent = document.querySelector(".modal-content");
-      if (modalContent && !modalContent.contains(event.target)) {
-        handleModalClose();
+      if (modalContent && !modalContent.contains(e.target)) {
+        onClose();
       }
     };
-
-    if (isModalOpen) {
-      document.addEventListener("keydown", handleEscapeKeyPress);
-      document.addEventListener("mousedown", handleOutsideClick);
-      document.body.classList.add("modal-open");
-    } else {
-      document.removeEventListener("keydown", handleEscapeKeyPress);
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.body.classList.remove("modal-open");
-    }
-
+  
+    document.addEventListener("keydown", handleEscapeKeyPress);
+    document.addEventListener("mousedown", handleClickOutsideModal);
+  
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.body.classList.remove("modal-open");
+      document.removeEventListener("mousedown", handleClickOutsideModal);
     };
-  }, [isModalOpen]);
+  }, [onClose]);
 
   return (
-    <div>
-      {/* Render existing recipes */}
-      {recipes.map((recipe, index) => (
-        <div key={index}>
-          <h3>{recipe.title}</h3>
-          <img src={recipe.imageSrc} alt={recipe.title} />
-          <p>{recipe.description}</p>
-          <ul>
-            {recipe.ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm">
+      <div className="bg-white rounded-lg p-6 relative w-full max-w-md max-h-full overflow-y-auto">
+        <button
+          type="button"
+          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none cursor-pointer"
+          onClick={onClose}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
-      {/* Add Recipe button */}
-      <button
-        type="button"
-        className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-1 focus:outline-none 
-        focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-4 ml-2 dark:border-blue-500 
-        dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
-        onClick={handleModalOpen}
-      >
-        Add a Recipe
-      </button>
+        <h2 className="text-xl font-bold mb-4">Add Recipe</h2>
 
-      {/* Recipe Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center backdrop-filter backdrop-blur-sm">
-          <div className="bg-white rounded-lg shadow-lg p-8 w-80 modal-content">
-            <div className="flex justify-between mb-4">
-              <h2 className="text-xl font-bold">Add a Recipe</h2>
-              <button
-                type="button"
-                className="text-gray-500 hover:text-gray-700"
-                onClick={handleModalClose}
-              >
-                X
-              </button>
-            </div>
-            <form onSubmit={handleFormSubmit}>
-              <div className="mb-4">
-                <label htmlFor="recipeTitle" className="block font-medium mb-2">
-                  Title
-                </label>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="title" className="block font-bold mb-1">
+              Title:
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={newRecipe.title}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="imageSrc" className="block font-bold mb-1">
+              Image URL:
+            </label>
+            <input
+              type="text"
+              id="imageSrc"
+              name="imageSrc"
+              value={newRecipe.imageSrc}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="description" className="block font-bold mb-1">
+              Description:
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={newRecipe.description}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full h-24"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-bold mb-1">Ingredients:</label>
+            {newRecipe.ingredients.map((ingredient, index) => (
+              <div key={index} className="flex mb-2">
                 <input
                   type="text"
-                  id="recipeTitle"
-                  className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-md w-full"
-                  value={recipeTitle}
-                  onChange={(event) => setRecipeTitle(event.target.value)}
+                  value={ingredient}
+                  onChange={(e) => handleIngredientChange(e, index)}
+                  className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mr-2"
+                  required
                 />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="recipeDescription" className="block font-medium mb-2">
-                  Description
-                </label>
-                <textarea
-                  id="recipeDescription"
-                  className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-md w-full"
-                  value={recipeDescription}
-                  onChange={(event) => setRecipeDescription(event.target.value)}
-                ></textarea>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="recipeIngredients" className="block font-medium mb-2">
-                  Ingredients
-                </label>
-                <textarea
-                  id="recipeIngredients"
-                  className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-md w-full"
-                  value={recipeIngredients}
-                  onChange={(event) => setRecipeIngredients(event.target.value)}
-                  placeholder="Enter ingredients here, separated by new lines"
-                ></textarea>
-              </div>
-              <div className="flex justify-between">
                 <button
                   type="button"
-                  className="text-gray-500 hover:text-gray-700"
-                  onClick={handleModalClose}
+                  onClick={() => handleRemoveIngredient(index)}
+                  className="text-red-500 hover:text-red-700 focus:outline-none"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white dark:bg-blue-800 dark:hover:bg-blue-700 
-                  rounded-lg px-4 py-2 font-medium shadow"
-                >
-                  Add Recipe
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
-            </form>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddIngredient}
+              className="text-blue-500 hover:text-blue-700 focus:outline-none"
+            >
+              + Add Ingredient
+            </button>
           </div>
-        </div>
-      )}
+
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Recipe
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
