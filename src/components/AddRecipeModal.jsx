@@ -9,6 +9,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     ingredients: [],
   });
 
+  // Load initial recipes
   useEffect(() => {
     setRecipes(initialRecipes);
   }, []); // Run only once when the component mounts
@@ -21,6 +22,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     }));
   };
 
+  // Handle ingredient changes (add/remove/update)
   const handleIngredientChange = (e, index) => {
     const { value } = e.target;
     setNewRecipe((prevRecipe) => {
@@ -51,6 +53,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     });
   };
 
+  // POST
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,6 +73,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     }
   };
 
+  // GET
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -83,6 +87,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     fetchRecipes();
   }, [setRecipes]);
 
+  // Close the modal when the user clicks outside of it or presses the Escape key
   useEffect(() => {
     const handleEscapeKeyPress = (e) => {
       if (e.key === "Escape") {
