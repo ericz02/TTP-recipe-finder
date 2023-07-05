@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const AddRecipeModal = ({ onClose }) => {
+const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
+
+  
   const [newRecipe, setNewRecipe] = useState({
     title: "",
     imageSrc: "",
@@ -9,6 +11,10 @@ const AddRecipeModal = ({ onClose }) => {
     ingredients: [],
   });
 
+  useEffect(() => {
+    setRecipes(initialRecipes);
+  }, []); // Run only once when the component mounts
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewRecipe((prevRecipe) => ({
@@ -54,6 +60,9 @@ const AddRecipeModal = ({ onClose }) => {
       const response = await axios.post("http://localhost:3000/recipes", newRecipe);
       console.log(response.data);
 
+      // Update the recipes state with the new recipe
+      setRecipes((prevRecipes) => [...prevRecipes, response.data]);
+
       onClose();
     } catch (error) {
       console.error("Error adding recipe:", error);
@@ -61,22 +70,36 @@ const AddRecipeModal = ({ onClose }) => {
   };
 
   useEffect(() => {
+    // Fetch the recipes when the component mounts
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/recipes");
+        setRecipes(response.data);
+      } catch (error) {
+        console.error("Error retrieving recipes:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
+  useEffect(() => {
     const handleEscapeKeyPress = (e) => {
       if (e.key === "Escape") {
         onClose();
       }
     };
-  
+
     const handleClickOutsideModal = (e) => {
       const modalContent = document.querySelector(".modal-content");
       if (modalContent && !modalContent.contains(e.target)) {
         onClose();
       }
     };
-  
+
     document.addEventListener("keydown", handleEscapeKeyPress);
     document.addEventListener("mousedown", handleClickOutsideModal);
-  
+
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
       document.removeEventListener("mousedown", handleClickOutsideModal);
