@@ -275,24 +275,6 @@
         "1 teaspoon salt",
         "1 teaspoon black pepper"
       ]
-    },
-    {
-      "title": "Pineapple Pizza",
-      "imageSrc": "https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/7762e80e80346b5d41abe2c65e2cf482.jpg",
-      "description": "Delicious Pizza",
-      "ingredients": [
-        "Pineapple"
-      ],
-      "id": 16
-    },
-    {
-      "title": "Pineapple Pizza",
-      "imageSrc": "https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/7762e80e80346b5d41abe2c65e2cf482.jpg",
-      "description": "Pizzaaa",
-      "ingredients": [
-        "pine"
-      ],
-      "id": 17
     }
   ]
 }

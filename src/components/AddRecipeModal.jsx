@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
-
-  
   const [newRecipe, setNewRecipe] = useState({
     title: "",
     imageSrc: "",
@@ -14,7 +12,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
   useEffect(() => {
     setRecipes(initialRecipes);
   }, []); // Run only once when the component mounts
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewRecipe((prevRecipe) => ({
@@ -63,6 +61,9 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
       // Update the recipes state with the new recipe
       setRecipes((prevRecipes) => [...prevRecipes, response.data]);
 
+      // Update the db.json file on the server-side
+      await axios.put(`http://localhost:3000/recipes/${response.data.id}`, response.data);
+
       onClose();
     } catch (error) {
       console.error("Error adding recipe:", error);
@@ -70,7 +71,6 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
   };
 
   useEffect(() => {
-    // Fetch the recipes when the component mounts
     const fetchRecipes = async () => {
       try {
         const response = await axios.get("http://localhost:3000/recipes");
@@ -81,7 +81,7 @@ const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
     };
 
     fetchRecipes();
-  }, []);
+  }, [setRecipes]);
 
   useEffect(() => {
     const handleEscapeKeyPress = (e) => {
