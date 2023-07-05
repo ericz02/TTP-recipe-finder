@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const AddRecipeModal = ({ onClose }) => {
+const AddRecipeModal = ({ onClose, setRecipes, initialRecipes }) => {
   const [newRecipe, setNewRecipe] = useState({
     title: "",
     imageSrc: "",
     description: "",
     ingredients: [],
   });
+
+  // Load initial recipes
+  useEffect(() => {
+    setRecipes(initialRecipes);
+  }, []); // Run only once when the component mounts
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,6 +22,7 @@ const AddRecipeModal = ({ onClose }) => {
     }));
   };
 
+  // Handle ingredient changes (add/remove/update)
   const handleIngredientChange = (e, index) => {
     const { value } = e.target;
     setNewRecipe((prevRecipe) => {
@@ -47,6 +53,7 @@ const AddRecipeModal = ({ onClose }) => {
     });
   };
 
+  // POST
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,29 +61,50 @@ const AddRecipeModal = ({ onClose }) => {
       const response = await axios.post("http://localhost:3000/recipes", newRecipe);
       console.log(response.data);
 
+      // Update the recipes state with the new recipe
+      setRecipes((prevRecipes) => [...prevRecipes, response.data]);
+
+      // Update the db.json file on the server-side
+      await axios.put(`http://localhost:3000/recipes/${response.data.id}`, response.data);
+
       onClose();
     } catch (error) {
       console.error("Error adding recipe:", error);
     }
   };
 
+  // GET
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/recipes");
+        setRecipes(response.data);
+      } catch (error) {
+        console.error("Error retrieving recipes:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, [setRecipes]);
+
+  // Close the modal when the user clicks outside of it or presses the Escape key
   useEffect(() => {
     const handleEscapeKeyPress = (e) => {
       if (e.key === "Escape") {
         onClose();
       }
     };
-  
+
     const handleClickOutsideModal = (e) => {
       const modalContent = document.querySelector(".modal-content");
       if (modalContent && !modalContent.contains(e.target)) {
         onClose();
       }
     };
-  
+
     document.addEventListener("keydown", handleEscapeKeyPress);
     document.addEventListener("mousedown", handleClickOutsideModal);
-  
+
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
       document.removeEventListener("mousedown", handleClickOutsideModal);
